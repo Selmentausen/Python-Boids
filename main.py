@@ -41,6 +41,16 @@ def draw_shape(surface, nodes, edges, node_color=(34, 68, 204), edge_color=(40, 
         pygame.draw.ellipse(surface, edge_color, (node[0], node[1], node_size, node_size))
 
 
+def rotate_shape(degrees, nodes, rotation_center):
+    sin_theta = math.sin(math.radians(degrees))
+    cos_theta = math.cos(math.radians(degrees))
+    for node in nodes:
+        x, y = node[0] - rotation_center[0], node[1] - rotation_center[1]
+        node[0] = rotation_center[0] + (x * cos_theta - y * sin_theta)
+        node[1] = rotation_center[1] + (y * cos_theta + x * sin_theta)
+
+
+rotate_shape(45, cube_nodes, (200, 200))
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
