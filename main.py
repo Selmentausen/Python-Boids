@@ -32,6 +32,10 @@ cube_edges = [
 ]
 
 
+def make_3d_shape():
+    pass
+
+
 def draw_shape(surface, nodes, edges, node_color=(34, 68, 204), edge_color=(40, 168, 107), node_size=10):
     for edge in edges:
         start_node, end_node = nodes[edge[0]], nodes[edge[1]]
@@ -41,7 +45,7 @@ def draw_shape(surface, nodes, edges, node_color=(34, 68, 204), edge_color=(40, 
         pygame.draw.ellipse(surface, edge_color, (node[0], node[1], node_size, node_size))
 
 
-def rotate_shape(degrees, nodes, rotation_center):
+def rotateZ_shape(degrees, nodes, rotation_center):
     sin_theta = math.sin(math.radians(degrees))
     cos_theta = math.cos(math.radians(degrees))
     for node in nodes:
@@ -50,7 +54,27 @@ def rotate_shape(degrees, nodes, rotation_center):
         node[1] = rotation_center[1] + (y * cos_theta + x * sin_theta)
 
 
-rotate_shape(45, cube_nodes, (200, 200))
+def rotateX_shape(degrees, nodes, rotation_center):
+    sin_theta = math.sin(math.radians(degrees))
+    cos_theta = math.cos(math.radians(degrees))
+    for node in nodes:
+        y, z = node[1] - rotation_center[1], node[2] - rotation_center[2]
+        node[1] = rotation_center[1] + (y * cos_theta - z * sin_theta)
+        node[2] = rotation_center[2] + (z * cos_theta + y * sin_theta)
+
+
+def rotateY_shape(degrees, nodes, rotation_center):
+    sin_theta = math.sin(math.radians(degrees))
+    cos_theta = math.cos(math.radians(degrees))
+    for node in nodes:
+        x, z = node[0] - rotation_center[0], node[2] - rotation_center[2]
+        node[0] = rotation_center[0] + (x * cos_theta - z * sin_theta)
+        node[1] = rotation_center[1] + (z * cos_theta + x * sin_theta)
+
+
+rotateZ_shape(45, cube_nodes, (200, 200, 200))
+rotateX_shape(45, cube_nodes, (200, 200, 200))
+rotateY_shape(45, cube_nodes, (200, 200, 200))
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
