@@ -6,6 +6,7 @@ pygame.init()
 screen = pygame.display.set_mode((400, 400))
 running = True
 
+cube_center = (200, 200, 200)
 cube_nodes = [
     [100, 100, 100],
     [100, 100, 300],
@@ -69,16 +70,25 @@ def rotateY_shape(degrees, nodes, rotation_center):
     for node in nodes:
         x, z = node[0] - rotation_center[0], node[2] - rotation_center[2]
         node[0] = rotation_center[0] + (x * cos_theta - z * sin_theta)
-        node[1] = rotation_center[1] + (z * cos_theta + x * sin_theta)
+        node[2] = rotation_center[2] + (z * cos_theta + x * sin_theta)
 
 
-rotateZ_shape(45, cube_nodes, (200, 200, 200))
-rotateX_shape(45, cube_nodes, (200, 200, 200))
-rotateY_shape(45, cube_nodes, (200, 200, 200))
+rotateY_shape(50, cube_nodes, cube_center)
+rotateX_shape(15, cube_nodes, cube_center)
+# rotateZ_shape(60, cube_nodes, cube_center)
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                running = False
+        if event.type == pygame.MOUSEMOTION:
+            if pygame.mouse.get_pressed(3)[0]:
+                rotateY_shape(event.rel[0], cube_nodes, cube_center)
+                rotateX_shape(event.rel[1], cube_nodes, cube_center)
+
     screen.fill(pygame.Color('white'))
     draw_shape(screen, cube_nodes, cube_edges)
     pygame.display.flip()
+pygame.quit()
