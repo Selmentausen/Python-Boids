@@ -1,40 +1,31 @@
 import pygame
 import math
 
-
 pygame.init()
 screen = pygame.display.set_mode((400, 400))
 running = True
 
-cube_center = (200, 200, 200)
-cube_nodes = [
-    [100, 100, 100],
-    [100, 100, 300],
-    [100, 300, 100],
-    [100, 300, 300],
-    [300, 100, 100],
-    [300, 100, 300],
-    [300, 300, 100],
-    [300, 300, 300]
-]
-cube_edges = [
-    [0, 1],
-    [1, 3],
-    [3, 2],
-    [2, 0],
-    [4, 5],
-    [5, 7],
-    [7, 6],
-    [6, 4],
-    [0, 4],
-    [1, 5],
-    [2, 6],
-    [3, 7],
-]
 
-
-def make_3d_shape():
-    pass
+class Cuboid:
+    def __init__(self, coords, dimensions):
+        x, y, z = coords
+        w, h, d = dimensions
+        self.nodes = [
+            [x, y, z],
+            [x, y, z + d],
+            [x, y + h, z],
+            [x, y + h, z + d],
+            [x + w, y, z],
+            [x + w, y, z + d],
+            [x + w, y + h, z],
+            [x + w, y + h, z + d],
+        ]
+        self.edges = [
+            [0, 1], [1, 3], [3, 2], [2, 0],
+            [4, 5], [5, 7], [7, 6], [6, 4],
+            [0, 4], [1, 5], [2, 6], [3, 7],
+        ]
+        self.center = (x + w // 2, y + h // 2, z + d // 2)
 
 
 def draw_shape(surface, nodes, edges, node_color=(34, 68, 204), edge_color=(40, 168, 107), node_size=10):
@@ -73,8 +64,9 @@ def rotateY_shape(degrees, nodes, rotation_center):
         node[2] = rotation_center[2] + (z * cos_theta + x * sin_theta)
 
 
-rotateY_shape(50, cube_nodes, cube_center)
-rotateX_shape(15, cube_nodes, cube_center)
+cube = Cuboid((100, 100, 100), (200, 200, 200))
+rotateY_shape(50, cube.nodes, cube.center)
+rotateX_shape(15, cube.nodes, cube.center)
 # rotateZ_shape(60, cube_nodes, cube_center)
 while running:
     for event in pygame.event.get():
@@ -85,10 +77,10 @@ while running:
                 running = False
         if event.type == pygame.MOUSEMOTION:
             if pygame.mouse.get_pressed(3)[0]:
-                rotateY_shape(event.rel[0], cube_nodes, cube_center)
-                rotateX_shape(event.rel[1], cube_nodes, cube_center)
+                rotateY_shape(event.rel[0], cube.nodes, cube.center)
+                rotateX_shape(event.rel[1], cube.nodes, cube.center)
 
     screen.fill(pygame.Color('white'))
-    draw_shape(screen, cube_nodes, cube_edges)
+    draw_shape(screen, cube.nodes, cube.edges)
     pygame.display.flip()
 pygame.quit()
