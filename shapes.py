@@ -6,11 +6,12 @@ class Shape:
     def __init__(self, coord, dimensions, node_color=(0, 0, 255), edge_color=(0, 255, 0), node_size=10):
         self.coord = coord
         self.dimensions = dimensions
-        self.nodes = []
-        self.edges = []
         self.node_color = node_color
         self.edge_color = edge_color
         self.node_size = node_size
+
+        self.edges = []
+        self.nodes = []
         self.center = coord
 
     def draw(self, surface):
@@ -87,3 +88,14 @@ class Cuboid(Shape):
             [0, 4], [1, 5], [2, 6], [3, 7],
         ]
         self.center = (x + w // 2, y + h // 2, z + d // 2)
+
+
+class MultiShape(Shape):
+    def __init__(self, coord, dimensions, *shapes, node_color=(0, 0, 255), edge_color=(0, 255, 0), node_size=10):
+        super(MultiShape, self).__init__(coord, dimensions, node_color, edge_color, node_size)
+        all_nodes: [..., [..., (int, int, int)]] = [shape.nodes for shape in shapes]
+        # TEMPORARY
+        left = min(all_nodes, key=lambda nodes: min(node[0] for node in nodes))
+        top = min(all_nodes, key=lambda nodes: min(node[1] for node in nodes))
+        print(left, top)
+

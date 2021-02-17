@@ -1,12 +1,11 @@
 import pygame
-import math
 from shapes import Cuboid, Pyramid
 
 pygame.init()
 screen = pygame.display.set_mode((400, 400))
 running = True
 cube = Cuboid((100, 100, 100), (200, 200, 200))
-cone = Pyramid((100, 100, 100), (200, 200, 200), edge_color=(255, 0, 0), node_color=(0, 0, 0))
+cone = Pyramid((0, 0, 0), (200, 200, 200), edge_color=(255, 0, 0), node_color=(0, 0, 0))
 
 while running:
     for event in pygame.event.get():
