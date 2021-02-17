@@ -97,5 +97,4 @@ class MultiShape(Shape):
         # TEMPORARY
         left = min(all_nodes, key=lambda nodes: min(node[0] for node in nodes))
         top = min(all_nodes, key=lambda nodes: min(node[1] for node in nodes))
-        print(left, top)
 
