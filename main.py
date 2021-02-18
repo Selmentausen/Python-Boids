@@ -1,11 +1,11 @@
 import pygame
 from shapes_3d import Cuboid, Pyramid
-from shapes_2d import Boid
+from shapes_2d import Boid2D
 
 pygame.init()
 screen = pygame.display.set_mode((400, 400))
 running = True
-boid = Boid((100, 100), 20, 20)
+boid = Boid2D((100, 100), 50, 50)
 # cube = Cuboid((100, 100, 100), (200, 200, 200))
 # cone = Pyramid((100, 100, 100), (200, 200, 200), edge_color=(255, 0, 0), node_color=(0, 0, 0))
 
@@ -16,13 +16,11 @@ while running:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 running = False
+            if event.key == pygame.K_r:
+                boid.set_rotation(0)
         if event.type == pygame.MOUSEMOTION:
             if pygame.mouse.get_pressed(3)[0]:
-                pass
-#                 cube.rotate_x(event.rel[1])
-#                 cube.rotate_y(event.rel[0])
-#                 cone.rotate_x(event.rel[1])
-#                 cone.rotate_y(event.rel[0])
+                boid.rotate(-event.rel[0])
     screen.fill(pygame.Color('white'))
     boid.draw(screen)
 #     cube.draw(screen)
