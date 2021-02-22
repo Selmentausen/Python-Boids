@@ -3,18 +3,22 @@ import pygame
 
 
 class Boid2D:
-    def __init__(self, top_left, width, height):
+    def __init__(self, top_left, size):
         self.x, self.y = top_left
-        self.width = width
-        self.height = height
+        self.size = self.width, self.height = size
         self.color = (0, 0, 255)
         self.nodes = [[self.x, self.y],
-                      [self.x, self.y + height],
-                      [self.x + width, self.y + height // 2]]
-        self.forward_node = self.nodes[-1]
+                      [self.x, self.y + self.height],
+                      [self.x + self.width, self.y + self.height // 2]]
         self.center = [sum(n[0] for n in self.nodes) // 3, sum(n[1] for n in self.nodes) // 3]
         self.rotation = 0
-        self.speed = 100
+        self.velocity = 0
+        self.settings = None
+
+    def update(self, screen, delta_time, settings):
+        self.settings = settings
+        self._update_center()
+        self.draw(screen)
 
     def draw(self, surface):
         pygame.draw.polygon(surface, self.color, self.nodes)
@@ -31,17 +35,16 @@ class Boid2D:
     def set_rotation(self, degrees):
         self.rotate(degrees % 360 - self.rotation)
 
-    def update_center(self):
+    def _update_center(self):
         self.center = [sum(n[0] for n in self.nodes) // 3, sum(n[1] for n in self.nodes) // 3]
 
+    def get_forward_vector(self):
+        unit_x = self.velocity * cos(radians(self.rotation))
+        unit_y = self.velocity * sin(radians(self.rotation))
+        return unit_x, unit_y
+
     def move_forward(self, delta_t):
-        unit_x = self.speed * cos(radians(self.rotation))
-        unit_y = self.speed * sin(radians(self.rotation))
+        unit_x, unit_y = self.get_forward_vector()
         for node in self.nodes:
             node[0] += unit_x * delta_t
             node[1] += unit_y * delta_t
-        self.update_center()
-
-
-
-
